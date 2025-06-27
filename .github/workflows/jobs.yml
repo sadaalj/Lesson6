@@ -30,7 +30,7 @@ jobs:
     
   build-job:
     outputs: 
-      build-output: ${{ steps.buildStep.outputs.builOut }}
+      build-output: ${{ steps.buildStep.outputs.buildOut }}
       
     name: build job
     runs-on: ubuntu-latest
@@ -40,7 +40,7 @@ jobs:
       - name:  define output variable
         id: buildStep
         run: |
-          bunver=$(bun --version) //declear variable where we will save the output version command
-          echo "buildOUt=$bunver" >> "$GITHUB_OUTPUT" //output the variable from the job and access it in another job
+          bunver=$(bun --version) 
+          echo "buildOut=$bunver" >> "$GITHUB_OUTPUT" 
           
   
