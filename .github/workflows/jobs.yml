@@ -1,0 +1,46 @@
+name: jobs
+
+
+on:
+  push:
+jobs:
+  concurrency-job2:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: test
+    steps:
+     - run: sleep 15
+
+  concurrency-job1:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: test
+    steps:
+      - run: sleep 15
+      
+
+
+  deploy-job:
+    name: deploy-job
+    runs-on: ubuntu-latest
+    needs: build-job
+    steps: 
+      - name: test build output
+        run: echo ${{needs.build-job.outputs.build-output}}
+    
+  build-job:
+    outputs: 
+      build-output: ${{ steps.buildStep.outputs.builOut }}
+      
+    name: build job
+    runs-on: ubuntu-latest
+    container:
+      image: oven/bun:slim
+    steps:
+      - name:  define output variable
+        id: buildStep
+        run: |
+          bunver=$(bun --version) //declear variable where we will save the output version command
+          echo "buildOUt=$bunver" >> "$GITHUB_OUTPUT" //output the variable from the job and access it in another job
+          
+  
